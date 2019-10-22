@@ -1,0 +1,13 @@
+{
+    "manifest_version": 2,
+    "version": "0.0.1",
+    "name": "LGPD Helper",
+    "description": "LGPD Helper",
+    "author": "Ramon cardoso de oliveira",
+    "browser_action": {
+   	 "default_title": "LGPD Helper",
+   	 "default_popup": "index.html",
+   	 "default_icon": "icon.png"
+    },
+	"content_security_policy": "script-src 'self' https://*.jquery.com; object-src 'self'"
+}
