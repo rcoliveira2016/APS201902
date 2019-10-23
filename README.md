@@ -1,2 +1,3 @@
-# APS201902
-LPGD-Heper
+# LPGD-Helper
+
+Extenção para google chrome que ajuda desenvolvedor full stack e se adequar a lei LPGD(Lei Geral de Proteção de Dados)
