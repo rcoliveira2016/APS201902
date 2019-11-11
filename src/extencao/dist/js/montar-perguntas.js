@@ -7,7 +7,7 @@ var MontarPerguntas = function (){
 				type : 'GET',
 				success: function(data){
 					var perguntas = data;
-					perguntas.forEach(x=> $((new TempletePergunta(x)).obter()).appendTo("#container-perguntas"));
+					perguntas.forEach(x=> $((new TempletePergunta(x)).obter()).hide().appendTo("#container-perguntas").show('slow'));
 				},
 				error: function(data){
 					

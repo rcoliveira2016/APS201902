@@ -1,27 +1,3 @@
-var arrayLocalStore = function(nomeChave){
-	var array = []
-	
-	
-	var _carregar = function(){
-		if(window.localStorage.getItem(nomeChave)){
-			array = JSON.parse(window.localStorage.getItem(nomeChave));
-		}
-	}
-	_carregar();
-	return $.extend(array, {
-		add: function(data){
-			console.log(array)
-			array.push(data) 
-			window.localStorage.setItem(nomeChave, JSON.stringify(array));
-		},
-		removeAll:function(){
-			array.splice(0,array.length)
-			window.localStorage.setItem(nomeChave, JSON.stringify(array));
-		}
-	});
-}
-
-
 $(document).ready(function(){
 	var _configuracoes = function(){
 		window.urls = {
@@ -30,8 +6,33 @@ $(document).ready(function(){
 	}
 	
 	var _carregar = function(){
+		$('.alert').hide();
 		_configuracoes();
 		new MontarPerguntas().montar();
+		
+		$(document).ajaxStart(function() {
+			$(".alert-carregando").show();
+		});
+
+		$(document).ajaxStop(function() {
+			$(".alert-carregando").hide();
+		});
+	}
+	
+	var _mensagemSucesso = function (texto){
+		$('.alert-mensagem').removeClass('alert-danger');
+		$('.alert-mensagem').addClass('alert-success');
+		$('.alert-mensagem strong').text('Sucesso');
+		$('.alert-mensagem span#texto').text(texto);
+		$('.alert-mensagem').show('slow');
+	}
+	
+	var _mensagemErro = function (texto){
+		$('.alert-mensagem').removeClass('alert-success');
+		$('.alert-mensagem').addClass('alert-danger');
+		$('.alert-mensagem strong').text('Erro');
+		$('.alert-mensagem span#texto').text(texto);
+		$('.alert-mensagem').show('slow');
 	}
 	
 	var _carregarEventoEnviar = function (){		
@@ -41,11 +42,12 @@ $(document).ready(function(){
 					url : window.urls.api+"/enviar-email.php",
 					type: 'POST',
 					data: {url:tabs[0].url},
-					success: function(data){
-						console.log(data)
+					success: function(response){
+						$('.respota-checkbox').prop( "checked", false ).prop( "disabled", false);
+						_mensagemSucesso("Foi enviado um email para "+ response +", o contato administrativo do servidor informando a resposta de seu questionario");						
 					},
 					error: function(data){
-						
+						_mensagemErro("Erro no envio de E-mail");
 					}
 				});
 			});
@@ -60,66 +62,5 @@ $(document).ready(function(){
 	
 	_carregarEventoEnviar();	
 	_carregarEventoLimpar();
-	_carregar();
-	/*var perguntaAtual = 1;	
-	var pesguntas = new arrayLocalStore('perguntas');
-	
-	var _carregarPegunta  = function (input){
-		$('div[data-pergunta='+perguntaAtual+']').find('.respota-checkbox').prop( "disabled", true );
-		
-		var resposta = $(input).val();
-		$('[data-pergunta='+resposta+']').animate({
-		  height: 'toggle'
-		});		
-		pesguntas.add({ pergunta: perguntaAtual, resposta: resposta});
-		perguntaAtual = resposta;
-	}
-		
-	var _carregarEventoPerguntas = function(){
-		$('.respota-checkbox').on('change', function (event) {
-			_carregarPegunta(this);
-		});
-	}
-	
-	var _carregarLimpar = function(){
-		$('#limpar').on('click', function (event) {
-			pesguntas.removeAll();
-			$('[data-pergunta]:not([data-pergunta="1"]').hide();
-			$('.respota-checkbox').prop( "checked", false ).prop( "disabled", false);
-			perguntaAtual = 1;
-		});
-	}
-	
-	var _carregar = function(){
-		if(pesguntas.length>0){
-			pesguntas.forEach(x=>{
-				var divPergunta = $('[data-pergunta='+x.pergunta+']');
-				var inputRadio = divPergunta.find('.respota-checkbox[value='+x.resposta+']');
-				divPergunta.find('.respota-checkbox').prop( "disabled", true );
-				inputRadio.prop( "checked", true );				
-				if(divPergunta.css('display') === 'none')
-					divPergunta.animate({
-					  height: 'toggle'
-					});
-				
-				if(pesguntas.indexOf(x)===pesguntas.length-1){
-					var divProximaPergunta = $('[data-pergunta='+x.resposta+']')					
-					if(divProximaPergunta.length>0){
-						divProximaPergunta.animate({ height: 'toggle'}, 800, function(){_carregarEventoPerguntas()} );
-						perguntaAtual = x.resposta
-					}						
-					else{
-						perguntaAtual = x.pergunta
-						_carregarEventoPerguntas();
-					}						
-				}
-			});
-		}
-		else
-			_carregarEventoPerguntas();
-		
-	}
-	_carregarLimpar();
-	_carregar();*/
-	
+	_carregar();	
 });

@@ -6,11 +6,11 @@ var TempletePergunta = function (model) {
 				<label>${model.textoPergunta}</label>
 				<div class="input-group-append">				
 					<div class="custom-control custom-radio mr-2">
-					  <input type="radio" id="${model.numero}_sim" name="${model.numero}" class="custom-control-input respota-checkbox" value="${model.sim}">
+					  <input type="radio" id="${model.numero}_sim" name="${model.numero}" class="custom-control-input respota-checkbox" value="1">
 					  <label class="custom-control-label" for="${model.numero}_sim">Sim</label>
 					</div>
 					<div class="custom-control custom-radio">
-					  <input type="radio" id="${model.numero}_nao" name="${model.numero}" class="custom-control-input respota-checkbox" value="${model.nao}">
+					  <input type="radio" id="${model.numero}_nao" name="${model.numero}" class="custom-control-input respota-checkbox" value="0">
 					  <label class="custom-control-label" for="${model.numero}_nao">Não</label>
 					</div>
 				</div>
