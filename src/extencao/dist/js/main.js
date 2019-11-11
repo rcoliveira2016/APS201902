@@ -25,18 +25,30 @@ var arrayLocalStore = function(nomeChave){
 $(document).ready(function(){
 	var _configuracoes = function(){
 		window.urls = {
-			api:"localhost/aps"
+			api:"http://localhost/APS201902.Api"
 		}
 	}
 	
 	var _carregar = function(){
-		_configuracoes
+		_configuracoes();
 		new MontarPerguntas().montar();
 	}
 	
 	var _carregarEventoEnviar = function (){		
 		$('.enviar').on('click', function(){
-			
+			chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {			  
+				$.ajax({
+					url : window.urls.api+"/enviar-email.php",
+					type: 'POST',
+					data: {url:tabs[0].url},
+					success: function(data){
+						console.log(data)
+					},
+					error: function(data){
+						
+					}
+				});
+			});
 		});
 	}
 	
@@ -46,7 +58,7 @@ $(document).ready(function(){
 		});
 	}
 	
-	_carregarEventoEnviar();
+	_carregarEventoEnviar();	
 	_carregarEventoLimpar();
 	_carregar();
 	/*var perguntaAtual = 1;	
